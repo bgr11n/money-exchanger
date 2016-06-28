@@ -39,11 +39,11 @@ describe Exchanger::ATM do
 
     it 'return valid coin data' do
       [
-        { 25 => 10, 50 => 10 }, { 50 => 4},
-        { 25 => 4, 50 => 2}, { 50 => 2, 25 => 4 },
-        { 10 => 10, 25 => 4}, { 25 => 4, 10 => 10 }
-      ].each_slice(2) do |atm_coins, result|
-        expect(atm(atm_coins).exchange(200)).to eq(result)
+        { 25 => 10, 50 => 10 },   { 50 => 4},              100,
+        { 25 => 4, 50 => 2},      { 50 => 2, 25 => 4 },    50,
+        { 10 => 10, 25 => 4},     { 25 => 4, 10 => 10 },   85
+      ].each_slice(3) do |atm_coins, result, input|
+        expect(atm(atm_coins).exchange(input)).to eq(result)
       end
     end
 
@@ -62,7 +62,7 @@ describe Exchanger::ATM do
       end
 
       it 'out of money' do
-        expect{ atm({ 50 => 1, 25 => 2, 10 => 1}).exchange(200) }.to raise_error(Exchanger::OutOfCoinsError)
+        expect{ atm({ 10 => 1, 25 => 2 }).exchange(200) }.to raise_error(Exchanger::OutOfCoinsError)
       end
 
       it 'out of nominals' do
