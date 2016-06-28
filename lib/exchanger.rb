@@ -18,7 +18,7 @@ module Exchanger
     end
 
     def format_coins(coins_data)
-      Hash[coins_data.to_a.map { |a| a.map(&:to_i) }]
+      Hash[coins_data.to_a.map { |a| a.map(&:to_i) }.sort { |a, b| b <=> a }]
     end
   end
 end

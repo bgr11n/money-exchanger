@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Exchanger::ATM do
   it { expect(described_class::NOMINALS).to eq([1, 2, 5, 10, 25, 50]) }
   it 'properly assign coins data' do
-    expect(described_class.new("1" => 10, 2 => "10").send(:coins)).to eq({1 => 10, 2 => 10})
+    expect(described_class.new("1" => 10, 2 => "10").send(:coins)).to eq({2 => 10, 1 => 10})
   end
 
   describe 'validations' do
@@ -32,5 +32,29 @@ describe Exchanger::ATM do
   end
 
   describe '#exchange' do
+
+    def atm(data)
+      described_class.new(data)
+    end
+
+    it 'return valid coin data' do
+      [
+        { 25 => 10, 50 => 10 }, { 50 => 4},
+        { 25 => 4, 50 => 2}, { 50 => 2, 25 => 4 },
+        { 10 => 10, 25 => 4}, { 25 => 4, 10 => 10 }
+      ].each_slice(2) do |atm_coins, result|
+        expect(atm(atm_coins).exchange(200)).to eq(result)
+      end
+    end
+
+    it 'raise error when out of money' do
+      expect(atm({ 50 => 1, 25 => 2, 10 => 1}).exchange(200)).to raise_error(Exchanger::OutOfCoinsError)
+    end
+
+    it 'lost coins after exchange' do
+      my_atm = atm({ 50 => 5, 25 => 2, 10 => 30 })
+      my_atm.exchange(200)
+      expect(my_atm.send(:coins)).to eq({ 50 => 1, 25 => 2, 10 => 30 })
+    end
   end
 end
