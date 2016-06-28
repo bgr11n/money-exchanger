@@ -47,14 +47,27 @@ describe Exchanger::ATM do
       end
     end
 
-    it 'raise error when out of money' do
-      expect(atm({ 50 => 1, 25 => 2, 10 => 1}).exchange(200)).to raise_error(Exchanger::OutOfCoinsError)
-    end
-
     it 'lost coins after exchange' do
       my_atm = atm({ 50 => 5, 25 => 2, 10 => 30 })
       my_atm.exchange(200)
       expect(my_atm.send(:coins)).to eq({ 50 => 1, 25 => 2, 10 => 30 })
+    end
+
+    describe 'raises error when' do
+      it 'wrong input format' do
+        my_atm = atm({ 50 => 5, 25 => 2, 10 => 30 })
+        ["asd", -1, { 1 => 10}, [1, 10]].each do |input|
+          expect{ my_atm.exchange(input) }.to raise_error(Exchanger::InputFormatError)
+        end
+      end
+
+      it 'out of money' do
+        expect{ atm({ 50 => 1, 25 => 2, 10 => 1}).exchange(200) }.to raise_error(Exchanger::OutOfCoinsError)
+      end
+
+      it 'out of nominals' do
+        expect{ atm({ 50 => 1, 25 => 2 }).exchange(20) }.to raise_error(Exchanger::OutNominalsError)
+      end
     end
   end
 end
