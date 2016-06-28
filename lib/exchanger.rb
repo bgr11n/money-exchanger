@@ -4,6 +4,7 @@ module Exchanger
 
     def initialize(coin_data)
       validate_init_data(coin_data)
+      @coins = coin_data
     end
 
   private

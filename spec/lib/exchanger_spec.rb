@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe Exchanger::ATM do
   it { expect(described_class::NOMINALS).to eq([1, 2, 5, 10, 25, 50]) }
+  it 'prperly assign coins data' do
+    expect(described_class.new("1" => 10, 2 => "10").send(:coins)).to eq({1 => 10, 2 => 10})
+  end
 
   describe 'validations' do
     it 'validates incoming data [bad value]' do
