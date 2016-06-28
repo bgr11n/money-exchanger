@@ -1,7 +1,7 @@
-class Exchanger
-  attr_reader :coins
+module Exchanger
+  class ATM
+    def initialize(coins)
 
-  def initialize(coins)
-    # p coins
+    end
   end
 end
