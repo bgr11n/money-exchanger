@@ -3,7 +3,7 @@ module API
     prefix :exchanger
 
     get '/' do
-      { status: 'ok' }
+      API.exchanger
     end
   end
 end
