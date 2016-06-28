@@ -11,10 +11,10 @@ module Exchanger
     attr_accessor :coins
 
     def validate_init_data(data)
-      raise Exchanger::CoinDataFormatError, "coin data must be a hash" unless data.is_a?(Hash)
-      raise Exchanger::CoinDataFormatError, "provide valid { key => value } pair" unless (data.keys + data.values).map{ |v| v.respond_to?(:to_i) }.all?
-      raise Exchanger::CoinDataFormatError, "provide valid coin nominals: #{NOMINALS}" if (data.keys.map(&:to_i) - NOMINALS).size > 0
-      raise Exchanger::CoinDataFormatError, "coins amount must be a positive number" unless data.values.map { |v| v.to_i > 0 }.all?
+      raise CoinDataFormatError, "coin data must be a hash" unless data.is_a?(Hash)
+      raise CoinDataFormatError, "provide valid { key => value } pair" unless (data.keys + data.values).map{ |v| v.respond_to?(:to_i) }.all?
+      raise CoinDataFormatError, "provide valid coin nominals: #{NOMINALS}" if (data.keys.map(&:to_i) - NOMINALS).size > 0
+      raise CoinDataFormatError, "coins amount must be a positive number" unless data.values.map { |v| v.to_i > 0 }.all?
     end
 
     def format_coins(coins_data)
