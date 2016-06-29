@@ -1,6 +1,7 @@
 module Exchanger
-  class CoinDataFormatError < StandardError ; end
-  class InputFormatError < StandardError ; end
-  class OutOfCoinsError < StandardError ; end
-  class OutNominalsError < StandardError ; end
+  class BaseError < StandardError ; end
+  class CoinDataFormatError < BaseError ; end
+  class InputFormatError < BaseError ; end
+  class OutOfCoinsError < BaseError ; end
+  class OutNominalsError < BaseError ; end
 end

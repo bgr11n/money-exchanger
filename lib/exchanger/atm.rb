@@ -25,7 +25,7 @@ module Exchanger
         result[nominal] = [(input - result_amount) / nominal, amount].min
         result_amount += result[nominal] * nominal
       end
-      raise OutNominalsError, "Cannot exchangr Required amount, choose another one" if result_amount < input.to_i
+      raise OutNominalsError, "Cannot exchange Required amount, choose another one" if result_amount < input.to_i
       result
     end
 
