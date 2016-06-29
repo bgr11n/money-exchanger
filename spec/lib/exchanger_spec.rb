@@ -39,9 +39,10 @@ describe Exchanger::ATM do
 
     it 'return valid coin data' do
       [
-        { 25 => 10, 50 => 10 },   { 50 => 4 },             200,
-        { 25 => 4, 50 => 2},      { 50 => 1 },             50,
-        { 10 => 10, 25 => 4},     { 25 => 3, 10 => 1 },    85
+        { 25 => 10, 50 => 10 } ,         { 50 => 4 },                   200,
+        { 25 => 4, 50 => 2 },            { 50 => 1 },                   50,
+        { 10 => 10, 25 => 4 },           { 25 => 3, 10 => 1 },          85,
+        { 5 => 2, 2 => 5, 1 => 10 },     { 5 => 2, 2 => 5, 1 => 4 },    24
       ].each_slice(3) do |atm_coins, result, input|
         expect(atm(atm_coins).exchange(input)).to eq(result)
       end
