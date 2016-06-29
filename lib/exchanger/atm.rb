@@ -9,25 +9,25 @@ module Exchanger
 
     def exchange(input)
       validate_input(input)
-
-      result = Hash.new(0)
-      need = input.to_i
-      result_amount = 0
-      coins.each do |nominal, amount|
-        size = [need / nominal, amount].min
-        result[nominal] = size
-        coins[nominal] -= size
-        result_amount += size * nominal
-        coins.delete(nominal) if coins[nominal] < 1
-        need = need - size * nominal
-        break if need == 0
-      end
-      raise OutNominalsError, "Cannot exchangr Required amount, choose another one" if result_amount < input.to_i
+      result = fetch_coins(input.to_i)
+      coins.merge!(result) { |nominal, amount, exchange| amount - exchange }.delete_if { |nominal, amount| amount == 0 }
       result
     end
 
   private
     attr_accessor :coins
+
+    def fetch_coins(input)
+      result = Hash.new(0)
+      result_amount = 0
+      coins.each do |nominal, amount|
+        break unless result_amount < input
+        result[nominal] = [(input - result_amount) / nominal, amount].min
+        result_amount += result[nominal] * nominal
+      end
+      raise OutNominalsError, "Cannot exchangr Required amount, choose another one" if result_amount < input.to_i
+      result
+    end
 
     def validate_init_data(data)
       raise CoinDataFormatError, "Coin data must be a hash" unless data.is_a?(Hash)
