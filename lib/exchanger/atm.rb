@@ -43,7 +43,7 @@ module Exchanger
     end
 
     def balance
-      @balance ||= @coins.map { |nominal, amount| nominal * amount }.inject(:+)
+      @coins.map { |nominal, amount| nominal * amount }.inject(:+)
     end
 
     def format_coins(coins_data)
